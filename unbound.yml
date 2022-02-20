@@ -1,0 +1,66 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    app: unbound
+  name: unbound
+  namespace: pihole
+spec:
+  replicas: 0
+  selector:
+    matchLabels:
+      app: unbound
+  serviceName: "unbound-service"
+  template:
+    metadata:
+      labels:
+        app: unbound
+    spec:
+      containers:
+      - name: unbound
+        image: mvance/unbound-rpi:1.15.0
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 53
+          protocol: TCP
+        - containerPort: 53
+          protocol: UDP
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: unbound-udp
+  namespace: pihole
+  annotations:
+    metallb.universe.tf/allow-shared-ip: dns
+spec:
+  selector:
+    app: unbound
+  ports:
+  - protocol: UDP
+    port: 53
+    name: dnsudp
+    targetPort: 53
+  type: LoadBalancer
+  loadBalancerIP: 192.168.2.205
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: unbound-service
+  labels:
+    svc: unbound-service
+  namespace: pihole
+  annotations:
+    metallb.universe.tf/allow-shared-ip: dns
+spec:
+  selector:
+    app: unbound
+  ports:
+  - protocol: TCP
+    port: 53
+    name: dnstcp
+    targetPort: 53
+  type: LoadBalancer
+  loadBalancerIP: 192.168.2.205
