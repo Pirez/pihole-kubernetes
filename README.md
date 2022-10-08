@@ -29,6 +29,12 @@ add the configmap to your cluster
 kubectl create configmap app-configs --from-env-file=.env -n pihole
 ```
 
+Spin up the pods for the kubernetes cluster.
+
+```
+kubectl apply -f .
+```
+
 ⚠️ Remember to change your `loadBalancerIP` to a static ip that fits your cluster. 
 
 
@@ -41,6 +47,11 @@ pihole-1   1/1     Running   0          3d13h
 ``` 
 
 Voila, pihole should be up and running 🤓
+
+To get the external ip for the pods
+```
+kubectl get services -n pihole
+```
 
 ### ConfigMap
 
