@@ -16,9 +16,9 @@ kubectl create namespace pihole
 Then setup the `.env` for your
 
 ```
-ADMIN_EMAIL: "<email>"
-WEBPASSWORD: "x"
-PIHOLE_DNS_: 1.1.1.1
+ADMIN_EMAIL="<email>"
+WEBPASSWORD="x"
+PIHOLE_DNS_=1.1.1.1
 ```
 
 Please check the documentation for setting up the latests updated paramaters [docker pihole](https://hub.docker.com/r/pihole/pihole).
